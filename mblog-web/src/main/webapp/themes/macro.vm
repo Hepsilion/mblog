@@ -1,0 +1,202 @@
+## 用户名称显示
+#macro(showName $user)
+	$user.name
+#end
+
+## 博文列表显示
+#macro(showBlog $row)
+<div class="stream-item" id="loop-${row.id}">
+    <div class="p-rank clearfix">
+        <div class="users">
+            <a href="$base/ta/${row.author.id}">
+				<div class="ava">
+					#showAva(${row.author.avatar}, "img-circle")
+				</div>
+				<div class="info">
+					<strong>${row.author.name}</strong>
+                    <time>$date.format('yyyy-MM-dd', $row.created)</time>
+					<time>$relDate.format($row.created)</time>
+				</div>
+			</a>
+        </div>
+        <div class="counts">
+            <span class="act"><i class="praise_icon"></i>${row.favors}</span>
+            <span class="act"><i class="comment_icon"></i>${row.comments}</span>
+        </div>
+    </div>
+    <div class="summary">
+		<a href="$base/view/${row.id}">
+        	<div class="title">#showGroup($row true)<h2>$!{row.title}</h2></div>
+        	<div class="excerpt wordbreak hidden-xs">$!{row.summary} </div>
+        </a>
+		<!--前端图片显示样式-->
+		#if($!{row.albums})
+		<!--Start-->
+		<div class="thumbs clearfix">
+			#foreach($alb in ${row.albums})
+    			#if ($velocityCount <= 6)
+    			<div class="media col-xs-4 col-sm-4 col-md-4">
+        			<a title="${row.title}" href="#resource(${alb.original})">
+						#albShow($!alb)
+        			</a>
+    			</div>
+    			#end
+			#end
+		</div>
+		<!--End-->
+		#end
+		
+    	<div class="foot-block clearfix">
+    		<ul class="tags">
+				#foreach($tag in $row.tagsArray)
+    			<li>
+    				<a class="tag tag-sm" href="$base/tag/${tag}/">$tag</a>
+				</li>
+				#end
+    		</ul>
+    	</div>
+    </div>
+</div>
+#end
+
+## 问答列表显示
+#macro(showAsk $row)
+<div class="stream-item" id="loop-${row.id}">
+    <div class="qus-rank">
+        <div class="answers plus">
+            <span>${row.comments}</span>
+            <small>回答</small>
+        </div>
+        <div class="views hidden-xs">
+            <span>${row.views}</span>
+            <small>浏览</small>
+        </div>
+    </div>
+    <div class="summary">
+        <h2 class="title">#postLink($row)</h2>
+
+        <div class="foot-block clearfix">
+            <div class="author">
+                <span><a href="$base/ta/${row.author.id}">#showName($row.author)</a></span>
+                <time>$date.format('yyyy-MM-dd', $row.created)</time>
+            </div>
+            <ul class="tags">
+				#foreach($tag in $row.tagsArray)
+                    <li>
+                        <a class="tag tag-sm" href="$base/tag/${tag}/">$tag</a>
+                    </li>
+				#end
+            </ul>
+            <div class="pull-right hidden-xs">
+                <a href="$base/view/${row.id}" class="act">查看更多</a>
+            </div>
+        </div>
+    </div>
+</div>
+#end
+
+## 翻页代码
+#macro (page $url $p $maxList)
+	#set($span = (${maxList} - 3)/2)
+	#set($__pc = $p.pageCount)
+    #if($url.indexOf("?") != -1)
+        #set($cURL=($url + "&pn="))
+    #else
+        #set($cURL=($url + "?pn="))
+    #end
+    
+<ul class="pagination">
+	#if($p.pageNo > 1)
+		<li><a class="prev" href="${cURL}${p.prev}" pageNo="1">&nbsp;<i class="fa fa-angle-left"></i>&nbsp;</a></li>
+    #end
+    
+    #set($totalNo = ${span} * 2 + 3)
+    #set($totalNo1 = $totalNo - 1)
+    #if($p.pageCount > $totalNo)
+    	#if($p.pageNo <= $span + 2)
+    		#foreach($i in [1..$totalNo1])
+		        #link(${p.pageNo}, $i, $cURL)
+		    #end
+		    #link(0, 0, "#")
+		    #link(${p.pageNo}, ${p.pageCount}, $cURL)
+    	#elseif($p.pageNo > ($p.pageCount - (${span} + 2)))
+    		#link(${p.pageNo}, 1, ${cURL})
+			#link(0, 0, "#")
+			#set($num = ${p.pageCount} - ${totalNo} + 2)
+			#foreach($i in [$num..${p.pageCount}])
+	        	#link(${p.pageNo}, ${i}, ${cURL})
+	        #end
+    	#else
+    		#link(${p.pageNo}, 1, $cURL)
+    		#link(0 0 "#")
+			#set($num = ${p.pageNo}-${span})
+			#set($num2 = ${p.pageNo}+$span)
+    		#foreach($i in [$num..$num2])
+		        #link($p.pageNo, $i, $cURL)
+		    #end
+		    #link(0, 0, "#")
+		    #link($p.pageNo, $p.pageCount, $cURL)
+    	#end
+    #elseif ($p.pageCount > 1)
+		#foreach($i in [1..$p.pageCount])
+	        #link(${p.pageNo}, $i, $cURL)
+	    #end
+    #else
+        #link(1, 1, $cURL)
+    #end
+    
+    #if ($p.pageNo < $p.pageCount)
+		<li><a href="${cURL}${p.next}" pageNo="$p.next">&nbsp;<i class="fa fa-angle-right"></i>&nbsp;</a></li>
+	#end
+</ul>
+#end
+
+
+##-- 分页链接A --
+#macro (link $pageNo $idx $url)
+	#if ($idx == 0)
+		<li><span>...</span></li>
+    #elseif ($pageNo == $idx)
+		<li class="active"><a href="javascript:void(0);"><span>${idx}</span></a></li>
+    #else
+		<li><a href="${url}${idx}">${idx}</a></li>
+    #end
+#end
+
+## 文章链接显示
+#macro (postLink $view)
+	<a href="$base/view/${view.id}">${view.title}</a>
+#end
+
+## 文章附件显示
+#macro (albShow $att)
+	#if($att.store == 1)
+        <img src="$base/assets/images/spinner-overlay.gif" data-original="${att.screenshot}"/>
+	#else
+        <img src="$base/assets/images/spinner-overlay.gif" data-original="#resource(${att.screenshot})"/>
+	#end
+#end
+
+## 用户头像显示
+#macro (showAva $avatar $clazz)
+	#if($avatar.startWitdh("http:"))
+        <img class="$!{clazz}" src="$avatar"/>
+	#else
+        <img class="$!{clazz}" src="#resource($!{avatar})"/>
+	#end
+#end
+
+## 文章group显示
+#macro (showGroup $row $showFeatured)
+	#if ($row.featured > 1 && $showFeatured)
+    	<span class="label label-danger">推荐</span>
+	#elseif($row.group == 1)
+    	<span class="label label-success">文</span>
+	#elseif($row.group == 2)
+    	<span class="label label-info">图</span>
+	#elseif($row.group == 3)
+    	<span class="label label-violet">视频</span>
+	#elseif($row.group == 4)
+    	<span class="label label-warning">问</span>
+	#end
+#end

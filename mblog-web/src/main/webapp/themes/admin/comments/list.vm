@@ -1,0 +1,122 @@
+#set($layout = "/admin/layout/default.vm")
+
+<div class="panel m-t-large m-b">
+	<header class="panel-heading">评论管理</header>
+	<div class="panel-body">
+    	<div class="filter">
+    		<form id="qForm" method="post">
+    			<input type="hidden" name="pn" value="${page.pageNo}" />
+    			<div class="pull-left" style="width: 190px;">
+    				<input type="text" name="key" class="input-small inline form-control" value="$!{key}" placeholder="请输入关键字" style="width:180px">
+				</div>
+				<div class="pull-left">
+					<button class="btn btn-small btn-white" type="submit">查询</button>
+    			</div>
+    		</form>
+    	</div>
+    	<div class="pull-out m-t-small">
+    		<table id="dataGrid" class="table table-striped table-bordered b-t">
+    			<thead>
+    				<tr>
+    					<th width="50"><input type="checkbox" class="checkall"></div>
+    					<th width="80">#</th>
+    					<th>内容</th>
+						<th>目标Id</th>
+    					<th>作者</th>
+    					<th>发表日期</th>
+						#if($shiro.hasPermission("comments:edit"))
+    						<th width="200"></th>
+						#end
+    				</tr>
+    			</thead>
+    			<tbody>
+    				#foreach($row in $page.results)
+    				<tr>
+    					<td>
+							<input type="checkbox" name="id" value="${row.id}">
+    					</td>
+                        <td class="text-center">${row.id}</td>
+                        <td>$string.abbreviate("$!{row.content}", 64)</td>
+						<td>$!{row.toId}</td>
+    					<td>$!{row.author.username}</td>
+    					<td>$date.format('yyyy-MM-dd', $row.created)</td>
+						#if($shiro.hasPermission("comments:edit"))
+							<td class="text-center" align="left">
+								<a href="javascript:void(0);" class="btn btn-mini btn-white" data-id="${row.id}" data-action="delete">
+									<i class="fa fa-bitbucket"></i> 删除
+								</a>
+							</td>
+						#end
+                    </tr>
+    				#end
+    			</tbody>
+    		</table>
+    	</div>
+	</div>
+	<footer class="panel-footer">
+		<div class="row">
+			<div class="col-lg-6">
+				<a href="javascrit:void(0);" class="btn btn-mini btn-success" data-action="batch_del">批量删除</a>
+			</div>
+			<div class="col-lg-6 text-right text-center-sm">                
+				#page("list" $page 5)
+			</div>
+		</div>
+	</footer>
+</div>
+
+<script type="text/javascript">
+var J = jQuery;
+
+function ajaxReload(json){
+    if(json.code >= 0){
+        if(json.message != null && json.message != ''){
+			layer.msg(json.message, {icon: 1});
+        }
+        $('#qForm').submit();
+    }else{
+		layer.msg(json.message, {icon: 2});
+    }
+}
+
+function doDelete(ids) {
+	J.getJSON('$base/admin/comments/delete', J.param({'id': ids}, true), ajaxReload);
+}
+
+$(function() {
+	// 删除
+    $('#dataGrid a[data-action="delete"]').bind('click', function(){
+        var that = $(this);
+		layer.confirm('确定删除此项吗?', {
+            btn: ['确定','取消'], //按钮
+            shade: false //不显示遮罩
+        }, function(){
+			doDelete(that.attr('data-id'));
+        }, function(){
+        });
+        return false;
+    });
+    
+    $('a[data-action="batch_del"]').click(function () {
+		var check_length=$("input[type=checkbox][name=id]:checked").length;
+		
+		if (check_length == 0) {
+			layer.msg("请至少选择一项", {icon: 2});
+			return false;
+		}
+		
+		var ids = [];
+		$("input[type=checkbox][name=id]:checked").each(function(){
+			ids.push($(this).val());
+		});
+		
+		layer.confirm('确定删除此项吗?', {
+            btn: ['确定','取消'], //按钮
+            shade: false //不显示遮罩
+        }, function(){
+			doDelete(ids);
+        }, function(){
+        });
+    });
+})
+</script>

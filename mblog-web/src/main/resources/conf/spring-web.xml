@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName">
+    
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:init.properties</value>
+				<value>classpath:mtons.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean name="propertiesConfiger" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties"/>
+	</bean>
+    
+    <!--
+	
+	文件绝对路径存储：
+    <bean id="fileRepo" class="mblog.base.upload.impl.FileRepoImpl" />
+    
+	文件相对项目根路径存储：
+	<bean id="fileRepo" class="mblog.base.upload.impl.FileRealPathRepoImpl" />
+	
+    -->
+    
+</beans>

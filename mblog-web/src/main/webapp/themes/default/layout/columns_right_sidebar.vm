@@ -1,0 +1,48 @@
+##
+## 布局-右边栏布局
+## - 默认布局，未指定布局的页面都使用此模板
+## - 小屏自动隐藏右边栏
+##
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>$!title</title>
+	<meta name="keywords" content="$!{site_keywords}">
+	<meta name="description" content="$!{site_description}">
+
+	#parse("/default/inc/params.vm")
+</head>
+<body>
+	#parse("/default/inc/header.vm")
+
+    <!--.site-main -->
+	<div class="wrap" id="wrap">
+		<div class="container">
+			<div class="row">
+				<div class="main clearfix">
+				    <!-- left -->
+                    <div class="col-xs-12 col-md-9 side-left">
+                        ${screen_content}
+                    </div>
+                    <!-- right sidebar-->
+					<div class="col-xs-12 col-md-3 side-right hidden-xs hidden-sm">
+                    	#parse("/default/inc/right.vm")
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	#parse("/default/inc/footer.vm")
+
+	<a href="#" class="site-scroll-top"></a>
+
+	<script type="text/javascript">
+    seajs.use('main', function (main) {
+    	main.init();
+    });
+    </script>
+</body>
+</html>

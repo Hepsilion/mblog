@@ -1,0 +1,38 @@
+#set($layout="default/layout/columns_full.vm")
+
+#set($title = ${group.name})
+
+#contents(${group.id}, 'paging')
+<div class="blocks clearfix">
+	#foreach($row in $paging.results)
+    	<div class="col-xs-12 col-sm-4 col-lg-4">
+    		<div class="block">
+                <a class="block-thumbnail" href="$base/view/${row.id}">
+					<!--
+                    <div class="thumbnail-overlay"></div>
+                    -->
+            		<span class="play-button"></span>
+					#foreach($alb in ${row.albums})
+						#if ($velocityCount == 1)
+							#albShow(${alb})
+						#end
+					#end
+				</a>
+                <div class="block-contents">
+                    <p class="tit">$!{row.title}</p>
+                    <p class="desc">$!{row.summary}</p>
+				</div>
+			</div>
+		</div>
+	#end
+	#if($paging.results.size() == 0)
+        <div class="stream-item">
+            该目录下还没有内容!
+        </div>
+	#end
+</div>
+<div class="text-center clr">
+	#set($url = "$!{group.key}?ord=" + ${ord})
+	#page($url $paging 5)
+</div>
+#end

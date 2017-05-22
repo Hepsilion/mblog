@@ -1,0 +1,59 @@
+#set($layout = "/admin/layout/default.vm")
+
+<script type="text/javascript">
+    $(function(){
+        var option = {
+            expandLevel : 4,
+        };
+        $('#treeTable').treeTable(option);
+
+    });
+</script>
+
+<div class="panel m-t-large m-b">
+    <header class="panel-heading">友情链接管理</header>
+    <div class="panel-body">
+        <div class="pull-out m-t-small">
+            <table id="treeTable" class="table table-striped table-bordered b-t text-small">
+                <tr>
+                    <th class="col-lg-1">#</th>
+                    <th>网站名称</th>
+                    <th>logo</th>
+                    <th>URL</th>
+                    <th>描述</th>
+                    <th class="col-lg-1">排序</th>
+                    #if($shiro.hasPermission("friendLink:edit"))
+                        <th width="300" class="col-lg-2">操作</th>
+                    #end
+                </tr>
+                #foreach($row in $list)
+                    <td>$!{velocityCount}</td>
+                    <td>$!{row.siteName}</td>
+                    <td>$!{row.logo}</td>
+                    <td>$!{row.url}</td>
+                    <td>$!{row.remark}</td>
+                    <td>$!{row.sort}</td>
+                    #if($shiro.hasPermission("friendLink:edit"))
+                        <td class="text-center">
+                            <a href="$base/admin/friendLink/edit?id=${row.id}" class="btn btn-mini btn-primary">
+                                <i class="fa fa-check-square-o"></i> 修改
+                            </a>
+                            <a href="$base/admin/friendLink/delete?id=${row.id}" class="btn btn-mini"><i class="fa fa-check-square-o"></i> 删除</a>
+                        </td>
+                    #end
+                </tr>
+                #end
+            </table>
+            
+        </div>
+    </div>
+	<footer class="panel-footer">
+		<div class="row">
+			<div class="col-lg-6">
+				#if($shiro.hasPermission("friendLink:edit"))
+                <a class="btn btn-mini btn-success add-role-btn" href="$base/admin/friendLink/edit">添加链接</a>
+				#end
+			</div>
+		</div>
+	</footer>
+</div>

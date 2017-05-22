@@ -1,0 +1,33 @@
+#set($layout="default/layout/columns_noop.vm")
+
+## 懒加载片段
+
+#foreach($row in $page.results)
+<div class="shadow-box g-item span_1_of_3 col masonry-entry">
+	#if($!{row.album})
+        <div class="g-thumb">
+            <a href="$base/view/${row.id}">
+                <img src="#resource(${row.album.preview})">
+            </a>
+        </div>
+	#end
+	<h3 class="title">
+		<a href="$base/view/${row.id}">${row.title}</a>
+	</h3>
+	<div class="g-outline">
+		<p>${row.summary}</p>
+	</div>
+
+    <div class="g-btm">
+        <div class="pull-left">
+            <div class="g-ava">
+                #showAva(${row.author.avatar})
+            </div>
+            <div class="caption"><a href="$base/ta/${row.author.id}">#showName(${row.author})</a> • <time>$relDate.format($row.created)</time></div>
+        </div>
+        <a class="cmt pull-right" href="javascript:void(0)" onclick="onFavor(this, '${row.id}')">
+            <i class="fa fa-heart-o"></i>&nbsp; <b data="count">${row.favors}</b>
+        </a>
+    </div>
+</div>
+#end

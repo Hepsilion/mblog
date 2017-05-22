@@ -1,0 +1,82 @@
+##
+## 布局-详情页
+## - 左右布局
+## - 对于 keywords 和 description 进行了优化
+## - 对右边栏进行了单独定制
+##
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>$!{title} - $!{site_name}</title>
+	<meta name="keywords" content="mtons,$!{tags}"/>
+	<meta name="description" content="$!{summary}"/>
+
+	#parse("/default/inc/params.vm")
+</head>
+<body>
+	#parse("/default/inc/header.vm")
+
+	<!--.site-main -->
+	<div class="wrap" id="wrap">
+		<div class="container">
+			<div class="row">
+				<div class="main clearfix">
+					<!-- left -->
+					<div class="col-xs-12 col-md-9 side-left">
+						${screen_content}
+					</div>
+					<!-- right sidebar-->
+					<div class="col-xs-12 col-md-3 side-right hidden-xs hidden-sm">
+						<ul class="list-group about-user">
+							<li class="list-group-item user-card" >
+								<div class="ava">
+									<a href="$base/ta/${ret.author.id}">
+										#showAva(${ret.author.avatar}, "img-circle")
+									</a>
+								</div>
+								<div class="user-info">
+									<div class="nk mb10">#showName(${ret.author})</div>
+									<div class="mb6">
+										<a class="btn btn-success btn-xs" href="javascript:void(0);" data-id="${ret.author.id}" rel="follow">+ 关注</a>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="user-datas">
+									<ul>
+										<li><strong>${ret.author.posts}</strong><span>发布</span></li>
+										<li class="noborder"><strong>${ret.author.comments}</strong><span>评论</span></li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+						<ul class="list-group">
+							<li class="list-group-item">
+								<a class="btn btn-success btn-sm" href="javascript:void(0);" data-id="${ret.id}" rel="favor">喜欢</a>
+								<strong id="favors">${ret.favors}</strong> 喜欢
+							</li>
+						</ul>
+						#parse("/default/inc/right.vm")
+					</div>
+					<script type="text/javascript">
+                        seajs.use('view');
+                    </script>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	#parse("/default/inc/footer.vm")
+
+	<a href="#" class="site-scroll-top"></a>
+
+	<script type="text/javascript">
+    seajs.use('main', function (main) {
+    	main.init();
+    });
+    </script>
+</body>
+</html>

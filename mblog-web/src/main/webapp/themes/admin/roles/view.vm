@@ -1,0 +1,91 @@
+#set($layout = "/admin/layout/default.vm")
+<link rel="stylesheet" href="$base/assets/vendors/zTree_v3/css/demo.css" type="text/css">
+<link rel="stylesheet" href="$base/assets/vendors/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="$base/assets/vendors/zTree_v3/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="$base/assets/vendors/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="$base/assets/vendors/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
+<style>
+    .ztree .line{
+        height: auto;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+<SCRIPT type="text/javascript">
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        view: {
+            selectedMulti: false
+        }
+
+    };
+    $(document).ready(function(){
+        jQuery.ajax({url:"$base/admin/authMenus/tree?roleId=$!role.id",success:function(data){
+            $.fn.zTree.init($("#treeDemo"), setting, data);
+            console.log(data);
+        },dataType:"json"});
+
+        $("button").click(function(){
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getCheckedNodes(true);
+
+            var exp = new Array();
+            for(var i=0;i<nodes.length;i++){
+                var id = nodes[i].id;
+                exp.push(id);
+            }
+            $("#menus").val(exp);
+            $("form").submit();
+        });
+
+    });
+
+
+</SCRIPT>
+
+
+<div class="panel m-t-large m-b">
+    <header class="panel-heading">角色管理</header>
+
+    <div class="panel-body">
+        <div class="pull-out m-t-small">
+            <div class="form-wrapper">
+                <form action="save" method="POST" class="form-horizontal">
+                    <input type="hidden" name="id" value="$!role.id">
+                    <div class="form-group">
+                        <label for="name" class="col-lg-2 control-label">角色名称：</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" placeholder="请输入角色名称" name="name" value="$!role.name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="item" class="col-lg-2 control-label">分配菜单：</label>
+                        <div class="col-lg-6">
+                            <input id="menus" type="hidden" name="menus" value="">
+                            <div class="zTreeDemoBackground left" style="margin: 0 auto;text-align: center;width:100%">
+                                <ul id="treeDemo" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-9 col-lg-offset-2">
+                            <button type="button" class="btn btn-default">提交</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

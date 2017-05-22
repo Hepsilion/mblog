@@ -1,0 +1,44 @@
+##
+## 布局-全屏布局
+## - 上下布局结构
+## - 使用者：视频列表页、发现页、走廊页
+##
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>$!title - $!{site_name}</title>
+	<meta name="keywords" content="mtons,$!{site_keywords}"/>
+	<meta name="description" content="$!{site_description}"/>
+
+	#parse("/default/inc/params.vm")
+</head>
+<body>
+	#parse("/default/inc/header.vm")
+
+	<!--.site-main -->
+	<div class="wrap" id="wrap">
+		<div class="container">
+			<div class="row">
+				<div class="main clearfix">
+					<div class="col-xs-12 col-md-12">
+						${screen_content}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	#parse("/default/inc/footer.vm")
+
+	<a href="#" class="site-scroll-top"></a>
+
+	<script type="text/javascript">
+    seajs.use('main', function (main) {
+    	main.init();
+    });
+    </script>
+</body>
+</html>

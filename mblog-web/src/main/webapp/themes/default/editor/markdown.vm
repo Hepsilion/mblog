@@ -1,0 +1,34 @@
+
+<link href="$base/assets/vendors/markdown/editor.css" type="text/css" rel="stylesheet">
+
+<script type="text/javascript" charset="utf-8" src="$base/assets/vendors/markdown/marked.js"></script>
+<script type="text/javascript" charset="utf-8" src="$base/assets/vendors/markdown/CodeMirror.js"></script>
+<script type="text/javascript" charset="utf-8" src="$base/assets/vendors/markdown/editor.js"></script>
+
+<div style="display: none;">
+	<textarea id="content" name="content" rows="5"></textarea>
+</div>
+<textarea id="markdown" name="markdown" rows="5" data-required
+                                  data-describedby="message" data-description="content">$!{view.content}</textarea>
+
+<script type="text/javascript">
+
+function setContent(content) {
+	if (content != null && content.length > 0) {
+    	$('#content').text(content);
+	}
+}
+$(function () {
+	if (mblog.browser.ios || mblog.browser.android) {
+		$('#content').addClass('form-control');
+		return;
+	} else {
+		var editor = new Editor({
+    		element: document.getElementById('markdown'),
+    		onChange: function (markdown, html) {
+    			$('#content').text(html);
+    		}
+    	});
+	}
+})
+</script>

@@ -1,0 +1,30 @@
+#set($title = $!{site_name})
+
+#contents(0, 'paging')
+    <div class="shadow-box">
+    	<!-- tab -->
+    	<div class="filter">
+    		<ul class="">
+    			<li><a #if($ord == 'newest') class="active" #end href="$base/?ord=newest"><i class="fa fa-newspaper-o"></i>最新的</a></li>
+    			<li><a #if($ord == 'hottest') class="active" #end href="$base/?ord=hottest"><i class="fa fa-fire"></i>热门的</a></li>
+    		</ul>
+    	</div>
+    	<!-- tab end -->
+    	<!-- tab panes -->
+    	<div class="stream-list p-stream">
+    		#foreach($row in $paging.results)
+    			#showBlog($row)
+    		#end
+    
+    		#if($paging.results.size() == 0)
+    		<div class="stream-item">
+    			该目录下还没有内容!
+    		</div>
+    		#end
+    	</div>
+    </div>
+    <div class="text-center clr">
+    	#set($url = "index?ord=" + ${ord})
+    	#page($url $paging 5)
+    </div>
+#end

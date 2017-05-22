@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 开启注解方式, 并设置JSON的编码 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!-- Json -->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" value="#{jsonUtils.mapper}"/>
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=utf-8</value>
+	                	<value>text/html;charset=utf-8</value>
+	                	<value>text/json;charset=utf-8</value>
+	                	<value>application/json;charset=utf-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!--对静态资源文件的访问 -->
+	<mvc:default-servlet-handler />
+	
+	<mvc:resources mapping="/assets/**" location="/assets/" cache-period="31556926">
+		<mvc:resource-chain resource-cache="false" auto-registration="false">
+			<mvc:resolvers>
+	        	<bean class="org.springframework.web.servlet.resource.GzipResourceResolver"/>
+	        	<bean class="org.springframework.web.servlet.resource.PathResourceResolver"/>
+	        </mvc:resolvers>
+        </mvc:resource-chain>
+	</mvc:resources>
+	
+	<!-- Web层基于注解的扫描路径 -->
+	<context:component-scan base-package="mblog.web.controller" />
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+		<property name="toolboxConfigLocation" value="/WEB-INF/toolbox.xml" />
+		<property name="layoutUrl" value="default/layout/columns_right_sidebar.vm" />
+		<property name="layoutKey" value="layout" />
+		<property name="cache" value="true" />
+		<property name="suffix" value=".vm" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="dateToolAttribute" value="dateTool" />
+		<property name="redirectContextRelative" value="true" />
+		<property name="requestContextAttribute" value="request" />
+		<property name="redirectHttp10Compatible" value="true" />
+	</bean>
+	
+	<bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/themes/" />
+		<property name="configLocation" value="classpath:velocity.properties" />
+	</bean>
+
+	<!-- 最大上传文件为2M -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="2097152" />
+		<property name="maxInMemorySize" value="40960" />
+		<property name="uploadTempDir" value="store/_temp" />
+	</bean>
+	
+	<!-- 配置基础拦截器 -->
+	<mvc:interceptors>
+        <bean class="mblog.web.interceptor.BaseInterceptor"/>  
+    </mvc:interceptors>
+    
+</beans>

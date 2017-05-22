@@ -1,0 +1,51 @@
+#set($layout = "/admin/layout/default.vm")
+
+<script type='text/javascript' src='$base/assets/vendors/easypiechart/jquery.easy-pie-chart.js'></script>
+
+<div class="row m-t-large m-b">
+	<div class="col-lg-6">
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="panel">
+					<div class="panel-heading bg-white">
+						<div class="text-center h5">系统状态</div>
+					</div>
+					<div class="panel-body" style="height: 160px;">
+						<table class="table table-bordered">
+							<tr>
+								<td>内存消耗:</td>
+								<td>
+									${usedMemory}M / ${totalMemory}M
+								</td>
+							</tr>
+							<tr>
+								<td style="width:120px;">操作系统:</td>
+								<td>${os}</td>
+							</tr>
+							<tr>
+								<td style="width:120px;">JDK版本:</td>
+								<td>${javaVersion}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+					
+			<div class="col-lg-5">
+				<div class="panel">
+					<div class="panel-heading bg-white">
+						<div class="text-center h5">内存使用情况</div>
+					</div>
+					<div class="panel-body text-center">
+						<div class="inline">
+							<div class="easypiechart" data-percent="${memPercent}" data-bar-color="#576879">
+								<span class="h2" style="margin-left:10px;margin-top:10px;display:inline-block">${memPercent}</span>%
+								<div class="easypie-text text-muted">可用</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

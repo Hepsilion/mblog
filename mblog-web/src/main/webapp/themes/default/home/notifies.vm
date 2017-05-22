@@ -1,0 +1,54 @@
+#set($title = "我的主页")
+#set($layout="default/layout/columns_left_sidebar.vm")
+
+<div class="shadow-box">
+    <div class="filter">
+        <ul class="">
+            <li><a class="active" href="$base/home/notifies">通知</a></li>
+        </ul>
+    </div>
+    <!-- tab panes -->
+    <div class="stream-list">
+        #foreach($row in $page.results)
+            <div class="stream-item" id="loop-${row.id}">
+                <div class="blog-rank">
+                    <div class="user" title="${row.from.name}">
+                        <a href="$base/ta/${row.from.id}">
+                            #showAva(${row.from.avatar}, "img-circle")
+                        </a>
+                    </div>
+                </div>
+                <div class="summary">
+                    <h2 class="title">$row.from.name</h2>
+                    <div class="excerpt wordbreak">
+                    #if($row.event == 1)
+                        喜欢了你的文章 - #postLink($row.post)
+                    #elseif($row.event == 2)
+                        关注了你, 你的粉丝+1
+                    #elseif($row.event == 3)
+                        评论了你的文章 - <a href="$base/view/${row.postId}">点击查看详情</a>
+                    #elseif($row.event == 4)
+                        回复了你的评论 - <a href="$base/view/${row.postId}">点击查看详情</a>
+                    #end
+                    </div>
+                    </h2>
+                    <div class="foot-block clearfix">
+                        <div class="author">
+                            <time>$relDate.format($row.created)</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        #end
+
+        #if($page.results.size() == 0)
+        <div class="stream-item">
+            <i class="fa fa-info-circle fa-lg"></i> 您还没有收到通知!
+        </div>
+        #end
+
+    </div>
+</div>
+<div class="text-center clr">
+    #page("home/notifies" $page 5)
+</div>

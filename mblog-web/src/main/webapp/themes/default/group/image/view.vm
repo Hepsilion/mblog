@@ -1,0 +1,54 @@
+#set($title=$!{ret.title})
+#set($tags=$!{ret.tags})
+#set($summary=$!{ret.summary})
+#set($layout = "/default/layout/columns_view.vm")
+
+<div class="shadow-box">
+	<h1 class="post-title">$!{ret.title}</h1>
+	<div class="clearfix post-other">
+		<span class="pull-left author">
+			<a class="author-name" href="$base/ta/${ret.author.id}" target="_blank">#showName(${ret.author})</a>
+		</span>
+		<time class="pull-left time">$date.format('yyyy-MM-dd', $ret.created)</time>
+        <span class="pull-left time">浏览: ${ret.views}</span>
+        <ul class="tags">
+			#foreach($tag in $ret.tagsArray)
+                <li>
+                    <a class="tag tag-sm" href="$base/tag/${tag}/">$tag</a>
+                </li>
+			#end
+        </ul>
+        <span class="pull-right action-box"></span>
+	</div>
+	<div class="post-frame">
+		#if($ret.albums)
+			<div class="thumbs">
+			#foreach($alb in $ret.albums)
+				<div class="single-post-media">
+					<a title="${ret.title}" href="#resource(${alb.original})">
+						#if($att.store == 1)
+							<img src="$base/assets/images/spinner.gif" data-original="#resource(${alb.original})"/>
+						#else
+							<img src="$base/assets/images/spinner.gif" data-original="#resource(${alb.original})"/>
+						#end
+					</a>
+				</div><!-- .post-thumbnail -->
+			#end
+			</div>
+		#end
+		<div class="post-content">
+			${ret.content}
+		</div>
+		<div class="post-footer">
+            <div class="tip">分享到：</div>
+			<div class="shares">
+                <!-- Share Button BEGIN -->
+				#parse("/default/inc/share.vm")
+                <!-- Share Button END -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- post/end -->
+
+#parse("/default/group/comments.vm")

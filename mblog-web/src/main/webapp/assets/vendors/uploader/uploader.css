@@ -1,0 +1,118 @@
+.uploader {
+	border: 2px dashed #e6e6e6;
+	color: #92AAB0;
+	background: url(./images/image.png) center 5px no-repeat;
+	text-align: center;
+	vertical-align: middle;
+	padding: 70px 0px 10px;
+	margin-bottom: 10px;
+	font-size: 200%;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.uploader div.or {
+	font-size: 50%;
+	font-weight: bold;
+	color: #C0C0C0;
+	padding: 2px;
+}
+
+.uploader div.browser label {
+	background-color: #00b7ee;
+	color: white;
+	padding: 6px 30px;
+	font-size: 14px;
+	cursor: pointer;
+	border-radius: 2px;
+	position: relative;
+	overflow: hidden;
+	margin: 10px auto 0px auto;
+}
+
+.uploader div.browser span {
+	cursor: pointer;
+}
+
+.uploader div.browser input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	border: solid transparent;
+	opacity: .0;
+	filter: alpha(opacity = 0);
+	direction: ltr;
+	cursor: pointer;
+}
+
+.uploader div.browser label:hover {
+	background-color: #00a2d4;
+}
+
+.uploader-file-id {
+	font-weight: bold;
+}
+
+.uploader-file-name {
+	max-width: 300px;
+	overflow: hidden;
+}
+
+.uploader-file-size{
+	font-style: italic;
+	color: gray;
+	font-size: 90%;
+}
+
+.uploader-file-status,
+.uploader-file-status-default{
+	color: gray;
+}
+
+.uploader-file-status-error{
+	color: #990000;
+}
+
+.uploader-file-status-success{
+	color: #009900;
+}
+
+.uploader-image-preview {
+	float:left;
+	margin-right: 10px;
+	height: 60px;
+	width: 60px;
+	overflow: hidden;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webit-transition: 200ms ease-out;
+	-moz-transition: 200ms ease-out;
+	-o-transition: 200ms ease-out;
+	-ms-transition: 200ms ease-out;
+	transition: 200ms ease-out;
+}
+
+.uploader-close {
+	position: relative;
+	top: 0;
+	right: 0;
+	color: inherit;
+}
+
+.uploader-item {margin-bottom: 15px;}
+.uploader-item:last-child {margin-bottom: 0;}
+.uploader-item .progress {margin-bottom: 0;}
+
+.uploader-item .progress {height: 10px; margin-top: 8px;}

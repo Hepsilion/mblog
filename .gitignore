@@ -1,0 +1,18 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+.idea
+
+# project settings
+*.project
+*.classpath
+.settings/
+target
+.externalToolBuilders
+*.iml
+
+# rebel
+rebel.xml
+

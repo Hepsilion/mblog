@@ -1,0 +1,123 @@
+#set($title="发布照片")
+#set($layout="default/layout/columns_full.vm")
+
+<link href="$base/assets/vendors/uploader/uploader.css" type="text/css" rel="stylesheet" />
+	
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-camera"></i> ${group.alias}
+    </div>
+    <div class="panel-body">
+        <div id="message"></div>
+        <form class="form-horizontal" action="$base/post/update/${group.key}" method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="id" value="${view.id}"/>
+            <input type="hidden" name="group" value="${group.id}" />
+            <input type="hidden" name="authorId" value="${view.authorId}"/>
+
+            <div class="form-group">
+                <label for="desc" class="col-sm-2 control-label no-padding-right">标题</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="title" maxlength="32" data-required value="$!{view.title}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2"></label>
+                <div class="col-sm-8">
+                    <!-- D&D Zone-->
+                    <div id="drag-and-drop-zone" class="uploader">
+                        <div class="browser">
+                            <label>
+                                <span>点击选择图片</span>
+                                <input type="file" name="files[]" accept="image/*" multiple="multiple" title='点击添加图片'/>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /D&D Zone -->
+
+                    <div class="panel panel-default">
+                        <div class="panel-body demo-panel-files" id='upload-albums' file-counter="$!{view.albums.size()}">
+                            #if($view.albums.size() == 0)
+                                <span class="demo-note">您还没有上传图片</span>
+                            #else
+                                #foreach($row in $view.albums)
+                                    <div class="uploader-item" row="alb">
+                                        <button type="button" class="close uploader-close" rel="remove-album" rowId="${row.id}"><span>×</span></button>
+                                        <div class="uploader-image-preview">
+                                            <img src="$base${row.screenshot}"></div>
+                                        <span class="uploader-file-id">第${velocityCount}张</span> -
+                                        <span class="uploader-file-name">${row.screenshot}</span>
+                                        <span class="uploader-file-size">(已保存)</span><br>状态: <span class="uploader-file-status uploader-file-status-default uploader-file-status-success">上传完成</span>
+                                        <div class="progress active"><div class="progress-bar progress-bar-success" role="progressbar" style="width: 100%;"><span class="sr-only">已上传 100%</span></div></div>
+                                    </div>
+                                #end
+                            #end
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+                <div class="form-group" id="uedtior">
+                    <label for="desc" class="col-sm-2 control-label no-padding-right">内容</label>
+                    <input type="hidden" name="editor" value="$!{site_editor}"/>
+                    <div class="col-sm-8">
+                        #parse("/default/editor/$!{site_editor}.vm")
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="desc" class="col-sm-2 control-label no-padding-right">标签:</label>
+
+                <div class="col-sm-8">
+                    <input type="hidden" name="tags" id="fieldTags" value="$!{view.tags}">
+                    <ul id="tags"></ul>
+                    <p class="help-block" style="font-size: 12px;">添加相关标签，用逗号或空格分隔 (最多4个).</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">访问权限</label>
+                <div class="col-sm-3">
+                    <select class="form-control" name="privacy" data-select="$!{view.privacy}">
+                        <option value="0">公开</option>
+                        <option value="1">私密</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+            <!-- /form-actions -->
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+seajs.use('post', function (post) {
+	post.init();
+});
+seajs.use('upload');
+
+$(function () {
+    $('[rel="remove-album"]').click(function () {
+        var that = $(this);
+        var rowId = that.attr('rowId');
+
+        if (confirm("确定删除此项吗？")) {
+            jQuery.getJSON('$base/post/delete_album.json', {id: rowId}, function (ret) {
+                alert(ret.message);
+                if (ret.code >= 0) {
+                    that.closest('div[row="alb"]').remove();
+                }
+            });
+        }
+    });
+});
+</script>

@@ -1,0 +1,17 @@
+##<div class="stream-head clearfix">
+##    <ul class="user-post">
+##        #foreach($g in $groups)
+##            <li>
+##                #if ($velocityCount % 2 == 0)
+##                    #set($color = 'act-text')
+##                #else
+##                    #set($color = 'act-img')
+##                #end
+##                <a href="$base/post/new/${g.key}" class="act-icon ${color}">
+##                    <i class="${g.icon}"></i>
+##                    <span class="tip">${g.alias}</span>
+##                </a>
+##            </li>
+##        #end
+##    </ul>
+##</div>

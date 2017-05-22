@@ -1,0 +1,23 @@
+#set($title = "发现")
+#set($layout="default/layout/columns_full.vm")
+
+<ul class="tags_grid tags_effecs clearfix">
+	#foreach($row in $tags)
+		<li class="col-xs-6 col-sm-4 col-lg-3">
+			<figure>
+				<a href="$base/tag/${row.name}">
+					#if($!{row.post.album})
+						#albShow(${row.post.album})
+					#else
+					<div class="txt">$!{row.post.summary}</div>
+					#end
+					<span class="itag">${row.name}</span>
+				</a>
+				<figcaption>
+					<h3><i class="fa fa-tag"></i> ${row.name}</h3>
+					<span>$!{row.post.title}</span>
+				</figcaption>
+			</figure>
+		</li>
+	#end
+</ul>

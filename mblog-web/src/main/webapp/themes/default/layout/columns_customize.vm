@@ -1,0 +1,37 @@
+##
+## 布局-全屏布局
+## - 布局页设置基本结构, 剩下的全由使用页决定
+## - 使用者：他人主页
+##
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>$!title - $!{site_name}</title>
+	<meta name="keywords" content="mtons,$!{site_keywords}"/>
+	<meta name="description" content="$!{site_description}"/>
+
+	#parse("/default/inc/params.vm")
+</head>
+<body>
+
+	#parse("/default/inc/header.vm")
+
+	<!--.site-main -->
+	<div class="wrap">
+	${screen_content}
+	</div>
+
+	#parse("/default/inc/footer.vm")
+
+	<a href="#" class="site-scroll-top"></a>
+
+	<script type="text/javascript">
+    seajs.use('main', function (main) {
+    	main.init();
+    });
+    </script>
+</body>
+</html>

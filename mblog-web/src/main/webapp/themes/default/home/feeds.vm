@@ -1,0 +1,28 @@
+#set($title = "我的主页")
+#set($layout="default/layout/columns_left_sidebar.vm")
+
+<div class="shadow-box">
+    <div class="filter">
+        <ul class="">
+            <li><a class="active" href="$base/home">动态</a></li>
+        </ul>
+    </div>
+    <!-- tab panes -->
+    <div class="stream-list p-stream">
+        #foreach($row in $page.results)
+            #if($row.post)
+                #showBlog($row.post)
+            #end
+        #end
+
+        #if($page.results.size() == 0)
+            <div class="stream-item">
+                <i class="fa fa-info-circle fa-lg"></i> 没有动态,赶紧去关注几个屌丝吧!
+            </div>
+        #end
+
+    </div>
+</div>
+<div class="text-center clr">
+    #page("home" $page 5)
+</div>

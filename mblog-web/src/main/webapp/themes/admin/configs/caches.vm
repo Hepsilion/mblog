@@ -1,0 +1,56 @@
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <div class="media">
+            <span class="pull-left thumb-small m-t-mini">
+                <i class="fa fa-star-o"></i>
+            </span>
+            <div id="todo-1" class="pull-right text-primary m-t-small">
+                <a href="javascript:void(0);" class="btn btn-mini btn-success pull-right" data-action="flush_cache">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="h5">刷新Ehcache缓存</div>
+                <small class="text-muted">
+                    #foreach($row in $cacheNames)
+                        <span>$row</span>
+                    #end
+                </small>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="media">
+            <span class="pull-left thumb-small m-t-mini">
+                <i class="fa fa-star-o"></i>
+            </span>
+            <div id="todo-1" class="pull-right text-primary m-t-small">
+                <a href="javascript:void(0);" class="btn btn-mini btn-success pull-right" data-action="flush_conf">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="h5">刷新系统变量缓存</div>
+                <small class="text-muted">
+                    <span>系统变量</span>
+                    <span>导航菜单</span>
+                </small>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="media">
+            <span class="pull-left thumb-small m-t-mini">
+                <i class="fa fa-star-o"></i>
+            </span>
+            <div id="todo-1" class="pull-right text-primary m-t-small">
+                <a href="javascript:void(0);" class="btn btn-mini btn-success pull-right" data-action="flush_indexs">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="h5">重建索引</div>
+            </div>
+        </div>
+    </li>
+</ul>

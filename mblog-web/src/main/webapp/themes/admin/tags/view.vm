@@ -1,0 +1,38 @@
+#set($layout = "/admin/layout/default.vm")
+
+<div class="col-lg-6">
+	<div class="panel m-t-large m-b"> 
+		<header class="panel-heading">修改标签</header>
+		<div class="panel-body">
+			<form id="qForm" class="form-horizontal" method="post" action="update">
+				<input type="hidden" name="id" value="${view.id}" />
+				#parse("/admin/message.vm")
+				<div class="form-group">
+					<label class="col-lg-3 control-label">最后更新文章ID：</label>
+					<div class="col-lg-4">
+						<input type="text" name="lastPostId" class="form-control" value="${view.lastPostId}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">锁定：</label>
+					<div class="col-lg-8">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="locked" value="1" #if($view.locked == 1) checked="checked" #end> 勾选锁定
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+				<div class="col-lg-9 col-lg-offset-3">
+					<button type="submit" class="btn btn-primary btn-small">提交</button>
+				</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var J = jQuery;
+
+$(function() {
+})
+</script>

@@ -1,0 +1,51 @@
+##
+## 布局-左边栏布局
+## - 小屏时自动上下布局
+## - 使用者：用户主页
+##
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$!title</title>
+    <meta name="keywords" content="mtons,$!{site_keywords}">
+    <meta name="description" content="$!{site_description}">
+
+    #parse("/default/inc/params.vm")
+</head>
+<body>
+    #parse("/default/inc/header.vm")
+
+    <!--.site-main -->
+    <div class="wrap" id="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="main clearfix">
+                    <!-- left -->
+                    <div class="col-xs-12 col-md-3 side-left">
+                        #parse("/default/home/right.vm")
+                    </div>
+
+                    <div class="col-xs-12 col-md-9 side-right">
+                        <!-- tab -->
+                        #parse("/default/home/top.vm")
+                        <!-- tab end -->
+                        ${screen_content}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    #parse("/default/inc/footer.vm")
+
+    <a href="#" class="site-scroll-top"></a>
+
+    <script type="text/javascript">
+        seajs.use('main', function (main) {
+            main.init();
+        });
+    </script>
+</body>
+</html>

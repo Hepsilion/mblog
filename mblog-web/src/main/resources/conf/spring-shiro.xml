@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <!-- rememberMe-->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <!-- 30天 -->
+        <property name="maxAge" value="2592000"/>
+    </bean>
+
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager"
+          class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!--<property name="cipherKey" value="\#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <bean id="simpleSessionFactory" class="org.apache.shiro.session.mgt.SimpleSessionFactory"/>
+    <!--会话Cookie模板-->
+    <!--<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">-->
+        <!--<constructor-arg value="sid"/>-->
+        <!--<property name="httpOnly" value="true"/>-->
+        <!-- 1800秒 30分钟-->
+        <!--<property name="maxAge" value="1800"/>-->
+    <!--</bean>-->
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager"/>
+    <!--<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
+        <!--<property name="sessionFactory" ref="simpleSessionFactory"/>-->
+        <!--<property name="globalSessionTimeout" value="1800000"/>-->
+        <!--<property name="deleteInvalidSessions" value="true"/>-->
+        <!--<property name="sessionValidationSchedulerEnabled" value="true"/>-->
+        <!--<property name="sessionIdCookieEnabled" value="true"/>-->
+        <!--<property name="sessionIdCookie" ref="sessionIdCookie"/>-->
+        <!--<property name="sessionValidationInterval" value="1800000" />-->
+    <!--</bean>-->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm">
+            <bean class="mblog.shiro.realm.AccountRealm"/>
+        </property>
+        <property name="subjectFactory">
+            <bean class="mblog.shiro.authc.AccountSubjectFactory"/>
+        </property>
+
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/home"/>
+        <property name="unauthorizedUrl" value="/error/reject.html"/>
+        <property name="filters">
+            <map>
+                <entry key="authc" value-ref="authc"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /login = anon
+                /home* = user
+                /home/** = user
+                /post/** = user
+                /account/** = user
+                /admin = authc,perms[admin]
+                /admin/ = authc,perms[admin]
+                /admin/index = authc,perms[admin]
+                /admin/posts/**=authc,perms[posts:view]
+                /admin/posts/update**=authc,perms[posts:edit]
+                /admin/posts/delete**=authc,perms[posts:edit]
+                /admin/tags/**=authc,perms[tags:view]
+                /admin/tags/update**=authc,perms[tags:edit]
+                /admin/tags/delete**=authc,perms[tags:edit]
+                /admin/tags/update**=authc,perms[:tags:edit]
+                /admin/tags/lock**=authc,perms[tags:edit]
+                /admin/tags/featured**=authc,perms[tags:edit]
+                /admin/comments/**=authc,perms[comments:view]
+                /admin/comments/delete**=authc,perms[comments:edit]
+                /admin/users/**=authc,perms[users:view]
+                /admin/users/update**=authc,perms[users:edit]
+                /admin/users/pwd**=authc,perms[users:edit]
+                /admin/config/**=authc,perms[config:view]
+                /admin/config/updtate**=authc,perms[config:edit]
+                /admin/roles/list=authc,perms[roles:view]
+                /admin/roles/save=authc,perms[roles:edit]
+                /admin/roles/view=authc,perms[roles:edit]
+                /admin/authMenus/list=authc,perms[authMenus:view]
+                /admin/authMenus/save=authc,perms[authMenus:edit]
+                /admin/authMenus/view=authc,perms[authMenus:edit]
+            </value>
+        </property>
+    </bean>
+
+    <bean id="authc" class="mblog.shiro.filter.AuthenticatedFilter">
+        <property name="loginUrl" value="/login"/>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>

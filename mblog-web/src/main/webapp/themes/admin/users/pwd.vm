@@ -1,0 +1,27 @@
+#set($layout = "/admin/layout/default.vm")
+
+<div class="col-lg-6">
+	<div class="panel m-t-large m-b"> 
+		<header class="panel-heading">重置密码</header>
+		<div class="panel-body">
+			<form id="qForm" method="post">
+				#parse("/admin/message.vm")
+				<div class="form-group">
+					<p>设置  ${view.username} 的新密码:</p>
+					<div style="width: 260px;">         
+						<input type="text" class="input-small form-control" data-required="true" name="newPassword" placeholder="新密码">
+					</div>
+				</div>
+				<div class="actions m-t">
+					<button type="submit" class="btn btn-primary btn-small">提交</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var J = jQuery;
+
+$(function() {
+})
+</script>
